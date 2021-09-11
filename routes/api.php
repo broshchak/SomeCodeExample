@@ -14,12 +14,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index']);
-Route::post('/products', [\App\Http\Controllers\ProductController::class, 'store']);
-Route::get('/products/{id}', [\App\Http\Controllers\ProductController::class, 'show']);
-Route::put('/products/{id}', [\App\Http\Controllers\ProductController::class, 'update']);
-Route::delete('/products/{id}', [\App\Http\Controllers\ProductController::class, 'destroy']);
-Route::get('/products/search{name}', [\App\Http\Controllers\ProductController::class, 'search']);
+// Public routes
+Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
+Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
+// Protected routes
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
+});
+
+Route::prefix('products')->group(function () {
+    // Public routes
+    Route::get('/', [\App\Http\Controllers\ProductController::class, 'index']);
+    Route::get('/{id}', [\App\Http\Controllers\ProductController::class, 'show']);
+    Route::get('/search/{name}', [\App\Http\Controllers\ProductController::class, 'search']);
+    // Protected routes
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/', [\App\Http\Controllers\ProductController::class, 'store']);
+        Route::put('/{id}', [\App\Http\Controllers\ProductController::class, 'update']);
+        Route::delete('/{id}', [\App\Http\Controllers\ProductController::class, 'destroy']);
+    });
+});
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
