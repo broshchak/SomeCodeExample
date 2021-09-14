@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function register(Request $request) {
         $fields = $request->validate([
            'name' => 'required|string',
@@ -32,6 +36,10 @@ class AuthController extends Controller
         return response($response, 201);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function login(Request $request) {
         $fields = $request->validate([
             'email' => 'required|string',
@@ -58,6 +66,10 @@ class AuthController extends Controller
         return response($response, 201);
     }
 
+    /**
+     * @param Request $request
+     * @return string[]
+     */
     public function logout(Request $request) {
         auth()->user()->tokens()->delete();
 
