@@ -18,3 +18,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/facade', [HomeController::class, 'index']);
+Route::get('/event', [HomeController::class, 'checkEvent']);
